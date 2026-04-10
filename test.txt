@@ -1,0 +1,16 @@
+6C  JMP ind_handler
+13 ORA ind_y_handler
+00 BRK impl_handler
+4C JMP abs_handler
+B2 JAM jam_handler
+E7 ISC zpg_handler
+4C JMP abs_handler
+26 ROL zpg_handler
+83 SAX ind_x_handler
+4C JMP abs_handler
+13 ORA ind_y_handler
+83 SAX ind_x_handler
+4C JMP abs_handler
+BA TSX impl_handler
+8D STA abs_handler
+4C JMP abs_handler
