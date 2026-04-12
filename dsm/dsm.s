@@ -137,13 +137,11 @@ internal_loop:
 				       the opcode table. */
 	movq	%rax, %rdi /* Mnemonic is a parameter */
 	addq	$4, %rax /* Pointer to handler */
-	/*movq	(%rax), %rax*/
+	movq	(%rax), %rax
 
-	/* Call the handler.
-	call	abs_handler
+	call	*%rax
 	test	%rax, %rax
 	jnz	internal_loop
-	*/
 
 	jmp	clean
 
@@ -207,7 +205,7 @@ a_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge 	a_handler_fail
+	jl 	a_handler_fail
 	test	%r11, %r11
 	jz	a_handler_fail
 
@@ -228,11 +226,10 @@ a_handler_fail:
 	ret
 
 abs_handler:
-	jmp	clean
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	abs_handler_fail
+	jl	abs_handler_fail
 	test	%r11, %r11
 	jz	abs_handler_fail
 
@@ -256,7 +253,7 @@ abs_x_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	abs_x_handler_fail
+	jl	abs_x_handler_fail
 	test	%r11, %r11
 	jz	abs_x_handler_fail
 
@@ -280,7 +277,7 @@ abs_y_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	abs_y_handler_fail
+	jl	abs_y_handler_fail
 	test	%r11, %r11
 	jz	abs_y_handler_fail
 
@@ -304,7 +301,7 @@ imm_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	imm_handler_fail
+	jl	imm_handler_fail
 	test	%r11, %r11
 	jz	imm_handler_fail
 
@@ -328,7 +325,7 @@ impl_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	impl_handler_fail
+	jl	impl_handler_fail
 	test	%r11, %r11
 	jz	impl_handler_fail
 
@@ -352,7 +349,7 @@ ind_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	ind_handler_fail
+	jl	ind_handler_fail
 	test	%r11, %r11
 	jz	ind_handler_fail
 
@@ -376,7 +373,7 @@ ind_x_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	ind_x_handler_fail
+	jl	ind_x_handler_fail
 	test	%r11, %r11
 	jz	ind_x_handler_fail
 
@@ -400,7 +397,7 @@ ind_y_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	ind_y_handler_fail
+	jl	ind_y_handler_fail
 	test	%r11, %r11
 	jz	ind_y_handler_fail
 
@@ -424,7 +421,7 @@ jam_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	jam_handler_fail
+	jl	jam_handler_fail
 	test	%r11, %r11
 	jz	jam_handler_fail
 
@@ -448,7 +445,7 @@ rel_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	rel_handler_fail
+	jl	rel_handler_fail
 	test	%r11, %r11
 	jz	rel_handler_fail
 
@@ -472,7 +469,7 @@ zpg_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	zpg_handler_fail
+	jl	zpg_handler_fail
 	test	%r11, %r11
 	jz	zpg_handler_fail
 
@@ -496,7 +493,7 @@ zpg_x_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	zpg_x_handler_fail
+	jl	zpg_x_handler_fail
 	test	%r11, %r11
 	jz	zpg_x_handler_fail
 
@@ -520,7 +517,7 @@ zpg_y_handler:
 	movq	str_alloc_ptr, %rcx
 	addq	$0x12BFF, %rcx
 	cmpq	%r14, %rcx
-	jge	zpg_y_handler_fail
+	jl	zpg_y_handler_fail
 	test	%r11, %r11
 	jz	zpg_y_handler_fail
 
@@ -776,7 +773,7 @@ opcode_table:
 	.asciz "EOR"         /* 4d */
 	.quad abs_handler    /* 4d */
 	.asciz "LSR"         /* 4e */
-	.quad $abs_handler   /* 4e */
+	.quad abs_handler    /* 4e */
 	.asciz "SRE"         /* 4f */
 	.quad abs_handler    /* 4f */
 	.asciz "BVC"         /* 50 */
